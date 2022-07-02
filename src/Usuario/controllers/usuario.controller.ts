@@ -1,6 +1,8 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { NestResponse } from 'src/core/http/NestResponse';
+import { NestResponseBuilder } from 'src/core/http/NestResponseBuilder';
 import { Usuario } from '../models/usuario.model';
-import { UsuarioService } from '../usuario.service';
+import { UsuarioService } from '../services/usuario.service';
 
 @Controller('usuarios')
 export class UsuarioController {
@@ -10,14 +12,16 @@ export class UsuarioController {
   ) { }
 
   @Post()
-  public cria(@Body() usuario: Usuario) {
+  @HttpCode(201)
+  public cria(@Body() usuario: Usuario): NestResponse {
     const usuarioCriado = this.usuarioService.cria(usuario);
-    return usuarioCriado;
+    return new NestResponseBuilder().status(200).body(usuarioCriado).build();
   }
 
   @Get(':email')
+  @HttpCode(200)
   public buscarPorEmail(@Param('email') email: String) {
     const usuario = this.usuarioService.buscaPorEmail(email);
-    return usuario;
+    return new NestResponseBuilder().status(200).body(usuario).build();
   }
 }

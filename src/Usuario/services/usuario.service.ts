@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Usuario } from './models/usuario.model';
+import { Usuario } from '../models/usuario.model';
 
 @Injectable()
 export class UsuarioService {
@@ -13,19 +13,24 @@ export class UsuarioService {
     }
   ];
 
-  public cria(usuario: Usuario): Usuario|String {
-    const verificarEmail = this.buscaPorEmail(usuario.email);
+  public cria(usuarioRequest: Usuario): Usuario|String {
+    const verificarEmail = this.usuarios.find(usuario => usuario.email == usuarioRequest.email);
 
     if(verificarEmail) {
       throw new HttpException('Email deve ser unico', HttpStatus.NOT_FOUND);
     }
 
-    this.usuarios.push(usuario);
-    return usuario;
+    this.usuarios.push(usuarioRequest);
+    return usuarioRequest;
   }
 
   public buscaPorEmail(email: String): Usuario {
     const usuario = this.usuarios.find(usuario => usuario.email == email);
+
+    if(!usuario) {
+      throw new HttpException('Usuario não encontrada', HttpStatus.NOT_FOUND);
+    }
+
     return usuario;
   }
 }
