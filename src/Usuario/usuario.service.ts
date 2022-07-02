@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Usuario } from './usuario.model';
+import { Usuario } from './models/usuario.model';
 
 @Injectable()
 export class UsuarioService {

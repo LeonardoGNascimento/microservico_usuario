@@ -1,4 +1,4 @@
-import { UsuarioModule } from './Usuario/usuario.module';
+import { UsuarioModule } from './Usuario/services/usuario.module';
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { HttpExceptionFilter } from './common/filter/HttpException.filter';
