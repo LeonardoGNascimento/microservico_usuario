@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Usuario } from './usuario.model';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class UsuarioService {
     const verificarEmail = this.buscaPorEmail(usuario.email);
 
     if(verificarEmail) {
-      return "Email deve ser unico";
+      throw new HttpException('Email deve ser unico', HttpStatus.NOT_FOUND);
     }
 
     this.usuarios.push(usuario);
