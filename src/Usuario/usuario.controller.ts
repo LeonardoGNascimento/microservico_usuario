@@ -15,9 +15,9 @@ export class UsuarioController {
     return usuarioCriado;
   }
 
-  @Get(':nomeUsuario')
-  public buscaPorNome(@Param('nomeUsuario') nome: String) {
-    const usuario = this.usuarioService.buscaPorNome(nome);
+  @Get(':email')
+  public buscarPorEmail(@Param('email') email: String) {
+    const usuario = this.usuarioService.buscaPorEmail(email);
     return usuario;
   }
 }

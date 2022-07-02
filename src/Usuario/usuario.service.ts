@@ -13,13 +13,19 @@ export class UsuarioService {
     }
   ];
 
-  public cria(usuario: Usuario): Usuario {
+  public cria(usuario: Usuario): Usuario|String {
+    const verificarEmail = this.buscaPorEmail(usuario.email);
+
+    if(verificarEmail) {
+      return "Email deve ser unico";
+    }
+
     this.usuarios.push(usuario);
     return usuario;
   }
 
-  public buscaPorNome(nome: String) {
-    const usuario = this.usuarios.find(usuario => usuario.nome = nome); 
+  public buscaPorEmail(email: String): Usuario {
+    const usuario = this.usuarios.find(usuario => usuario.email == email);
     return usuario;
   }
 }
