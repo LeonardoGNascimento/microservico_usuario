@@ -1,10 +1,22 @@
 import { UsuarioModule } from './Usuario/usuario.module';
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
-import { HttpExceptionFilter } from './common/filter/HttpException.filter';
+import { HttpExceptionFilter } from './common/core/filter/HttpException.filter';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Usuario } from './Usuario/models/usuario.model';
 
 @Module({
-  imports: [UsuarioModule,],
+  imports: [
+    UsuarioModule,
+    TypeOrmModule.forRoot({
+      database: "usuarios",
+      type: "mysql",
+      synchronize: true,
+      username: "root",
+      password: "root",
+      entities: [Usuario]
+    })
+  ],
   controllers: [],
   providers: [
     {
