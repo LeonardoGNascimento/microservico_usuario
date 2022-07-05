@@ -1,6 +1,5 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put } from '@nestjs/common';
-import { NestResponse } from 'src/common/core/http/NestResponse';
-import { NestResponseBuilder } from 'src/common/core/http/NestResponseBuilder';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { Usuario } from '../models/usuario.model';
 import { UsuarioService } from '../services/usuario.service';
 
@@ -12,40 +11,51 @@ export class UsuarioController {
   ) { }
 
   @Post()
-  @HttpCode(HttpStatus.CREATED)
-  public async cria(@Body() usuario: Usuario): Promise<NestResponse> {
+  public async cria(
+    @Body() usuario: Usuario,
+    @Res() response: Response
+  ) {
     const usuarioCriado = await this.usuarioService.cria(usuario);
-    return new NestResponseBuilder().status(HttpStatus.CREATED).body(usuarioCriado).build();
+    response.json(usuarioCriado).status(HttpStatus.CREATED)
   }
 
   @Get()
-  @HttpCode(HttpStatus.OK)
-  public async listar(): Promise<NestResponse> {
+  public async listar(
+    @Res() response: Response
+  ) {
     const usuarios = await this.usuarioService.listar();
-    return new NestResponseBuilder().status(HttpStatus.OK).body(usuarios).build();
+    response.json(usuarios).status(HttpStatus.OK)
   }
 
   @Patch(':id')
-  @HttpCode(HttpStatus.OK)
-  public async atualizar(@Param('id') id, @Body() body): Promise<NestResponse> {
+  public async atualizar(
+    @Param('id') id,
+    @Body() body,
+    @Res() response: Response
+  ) {
     const usuario = new Usuario();
     usuario.nome = body.nome;
     usuario.email = body.email;
 
     const resultado = await this.usuarioService.atualizar(usuario);
-    return new NestResponseBuilder().status(HttpStatus.OK).body(resultado).build();
+    response.json(resultado).status(HttpStatus.OK)
   }
 
   @Get(':id')
-  @HttpCode(HttpStatus.OK)
-  public async buscar(@Param('id') id: number): Promise<NestResponse> {
+  public async buscar(
+    @Param('id') id: number,
+    @Res() response: Response
+  ) {
     const usuario = await this.usuarioService.buscar(id);
-    return new NestResponseBuilder().status(HttpStatus.OK).body(usuario).build();
+    response.json(usuario).status(HttpStatus.OK)
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  public async excluir(@Param('id') id: number) {
+  public async excluir(
+    @Param('id') id: number,
+    @Res() response: Response
+  ) {
     await this.usuarioService.excluir(id);
+    response.status(HttpStatus.NO_CONTENT)
   }
 }
