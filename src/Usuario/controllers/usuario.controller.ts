@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/Auth/aplicacao/service/jwt.guard';
 import { Usuario } from '../models/usuario.model';
 import { UsuarioService } from '../services/usuario.service';
@@ -11,6 +11,7 @@ export class UsuarioController {
   ) { }
 
   @Post()
+  @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.CREATED)
   public async cria(
     @Body() usuario: Usuario
@@ -30,6 +31,7 @@ export class UsuarioController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.OK)
   public async atualizar(
     @Param('id') id: number,
@@ -46,6 +48,7 @@ export class UsuarioController {
   }
 
   @Get(':id')
+  @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.OK)
   public async buscar(
     @Param('id') id: number
@@ -56,6 +59,7 @@ export class UsuarioController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   public async excluir(
     @Param('id') id: number

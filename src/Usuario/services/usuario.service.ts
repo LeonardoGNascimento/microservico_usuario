@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { AuthService } from 'src/Auth/aplicacao/service/auth.service';
 import { Usuario } from '../models/usuario.model';
 import { UsuarioRepository } from '../repository/usuario.repository';

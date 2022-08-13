@@ -5,17 +5,22 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { HttpExceptionFilter } from './common/core/filter/HttpException.filter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Usuario } from './Usuario/models/usuario.model';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     UsuarioModule,
     AuthModule,
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      isGlobal: true
+    }),
     TypeOrmModule.forRoot({
-      database: "usuarios",
+      database: `${process.env.DATABASE}`,
       type: "mysql",
       synchronize: true,
-      username: "root",
-      password: "root",
+      username: `${process.env.DATABASE_USER}`,
+      password: `${process.env.DATABASE_PASSWORD}`,
       entities: [Usuario]
     })
   ],
