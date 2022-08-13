@@ -4,12 +4,13 @@ import { UsuarioModule } from 'src/Usuario/usuario.module';
 import { AuthController } from './aplicacao/controller/auth.controller';
 import { AuthService } from './aplicacao/service/auth.service';
 import { JwtStrategy } from './aplicacao/service/jwt.strategy';
+import { JwtConfig } from './aplicacao/service/JwtConfig';
 
 @Module({
   imports: [
     UsuarioModule, 
     JwtModule.register({
-      secret: `${process.env.JWT_SECRET}`,
+      secret: JwtConfig.SECRET_PASS,
       signOptions: { expiresIn: "1h"}
     })
   ],
