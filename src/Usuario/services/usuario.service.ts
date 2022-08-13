@@ -1,60 +1,55 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
 import { Usuario } from '../models/usuario.model';
+import { UsuarioRepository } from '../repository/usuario.repository';
 
 @Injectable()
 export class UsuarioService {
   constructor(
-    @InjectRepository(Usuario) private usuarioRepository: Repository<Usuario>
+    private readonly usuarioRepository: UsuarioRepository
   ) { }
 
   public async cria(usuarioRequest: Usuario): Promise<Usuario> {
 
-    const verificarEmail = await this.usuarioRepository.findOneBy({ email: usuarioRequest.email })
+    const verificarEmail = await this.usuarioRepository.buscarPorEmail(usuarioRequest.email);
 
     if (verificarEmail) {
-      throw new HttpException('Email deve ser unico', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Email já cadastrado', HttpStatus.BAD_REQUEST);
     }
 
-    const usuario = await this.usuarioRepository.save(usuarioRequest);
+    const usuario = await this.usuarioRepository.cadastrar(usuarioRequest);
 
     return usuario;
   }
 
   public async buscar(id: number): Promise<Usuario> {
-    const usuario = await this.usuarioRepository.findOneBy({id: id});
+    const usuario = await this.usuarioRepository.buscar(id);
 
     if (!usuario) {
-      throw new HttpException('Usuario não encontrada', HttpStatus.NOT_FOUND);
+      throw new HttpException('Usuario não encontrado', HttpStatus.NOT_FOUND);
     }
 
     return usuario;
   }
 
   public async listar(): Promise<Usuario[]> {
-    const usuario = await this.usuarioRepository.find();
+    const usuarios = await this.usuarioRepository.listar();
 
-    if (!usuario) {
-      throw new HttpException('Usuario não encontrada', HttpStatus.NOT_FOUND);
+    if (!usuarios) {
+      throw new HttpException('Nenhum usuario encontrado', HttpStatus.NOT_FOUND);
     }
 
-    return usuario;
+    return usuarios;
   }
 
-  public async excluir(id: number) {
+  public async excluir(id: number): Promise<void> {
     const usuario = await this.buscar(id);
-    await this.usuarioRepository.delete(usuario.id);
+    await this.usuarioRepository.excluir(usuario);
   }
 
   public async atualizar(usuario: Usuario): Promise<Usuario> {
-    const buscarUsuario = await this.buscar(usuario.id);
+    await this.buscar(usuario.id);
+    await this.usuarioRepository.atualizar(usuario);
 
-    buscarUsuario.nome = usuario.nome;
-    buscarUsuario.email = usuario.email;
-
-    await this.usuarioRepository.update(buscarUsuario.id, buscarUsuario)
-    
-    return buscarUsuario;
+    return usuario;
   }
 }

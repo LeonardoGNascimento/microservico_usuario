@@ -11,51 +11,56 @@ export class UsuarioController {
   ) { }
 
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   public async cria(
-    @Body() usuario: Usuario,
-    @Res() response: Response
-  ) {
+    @Body() usuario: Usuario
+  ): Promise<Usuario> {
     const usuarioCriado = await this.usuarioService.cria(usuario);
-    response.json(usuarioCriado).status(HttpStatus.CREATED)
+
+    return usuarioCriado;
   }
 
   @Get()
-  public async listar(
-    @Res() response: Response
-  ) {
+  @HttpCode(HttpStatus.OK)
+  public async listar(): Promise<Usuario[]> {
     const usuarios = await this.usuarioService.listar();
-    response.json(usuarios).status(HttpStatus.OK)
+
+    return usuarios;
   }
 
   @Patch(':id')
+  @HttpCode(HttpStatus.OK)
   public async atualizar(
-    @Param('id') id,
-    @Body() body,
-    @Res() response: Response
-  ) {
+    @Param('id') id: number,
+    @Body() body
+  ): Promise<Usuario> {
     const usuario = new Usuario();
+    usuario.id = id
     usuario.nome = body.nome;
     usuario.email = body.email;
 
     const resultado = await this.usuarioService.atualizar(usuario);
-    response.json(resultado).status(HttpStatus.OK)
+
+    return resultado
   }
 
   @Get(':id')
+  @HttpCode(HttpStatus.OK)
   public async buscar(
-    @Param('id') id: number,
-    @Res() response: Response
-  ) {
+    @Param('id') id: number
+  ): Promise<Usuario> {
     const usuario = await this.usuarioService.buscar(id);
-    response.json(usuario).status(HttpStatus.OK)
+
+    return usuario;
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   public async excluir(
-    @Param('id') id: number,
-    @Res() response: Response
-  ) {
-    await this.usuarioService.excluir(id);
-    response.status(HttpStatus.NO_CONTENT)
+    @Param('id') id: number
+  ): Promise<void> {
+    const resultado = await this.usuarioService.excluir(id);
+
+    return resultado;
   }
 }
