@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { JwtGuard } from 'src/Auth/aplicacao/service/jwt.guard';
 import { Usuario } from '../models/usuario.model';
 import { UsuarioService } from '../services/usuario.service';
 
@@ -21,6 +21,7 @@ export class UsuarioController {
   }
 
   @Get()
+  @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.OK)
   public async listar(): Promise<Usuario[]> {
     const usuarios = await this.usuarioService.listar();

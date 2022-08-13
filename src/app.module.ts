@@ -1,3 +1,4 @@
+import { AuthModule } from './Auth/auth.module';
 import { UsuarioModule } from './Usuario/usuario.module';
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
@@ -8,6 +9,7 @@ import { Usuario } from './Usuario/models/usuario.model';
 @Module({
   imports: [
     UsuarioModule,
+    AuthModule,
     TypeOrmModule.forRoot({
       database: "usuarios",
       type: "mysql",

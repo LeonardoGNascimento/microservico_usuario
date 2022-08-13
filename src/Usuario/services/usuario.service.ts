@@ -1,4 +1,5 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { AuthService } from 'src/Auth/aplicacao/service/auth.service';
 import { Usuario } from '../models/usuario.model';
 import { UsuarioRepository } from '../repository/usuario.repository';
 
@@ -7,6 +8,16 @@ export class UsuarioService {
   constructor(
     private readonly usuarioRepository: UsuarioRepository
   ) { }
+
+  public async login(usuario: Usuario) {
+    const resultado = await this.usuarioRepository.login(usuario);
+
+    if(!resultado) {
+      throw new NotFoundException('Usuario não encontrado');
+    }
+
+    return resultado;
+  }
 
   public async cria(usuarioRequest: Usuario): Promise<Usuario> {
 

@@ -59,4 +59,14 @@ export class UsuarioRepository {
 
     return resultado;
   }
+
+  async login(usuario: Usuario) {
+    const resultado = await this.usuarioRepository.findOneBy({ email: usuario.email, senha: usuario.senha })
+
+    if(!resultado) {
+      return null;
+    }
+
+    return resultado;
+  }
 }
