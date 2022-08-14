@@ -3,8 +3,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { UsuarioModule } from 'src/Usuario/usuario.module';
 import { AuthController } from './aplicacao/controller/auth.controller';
 import { AuthService } from './aplicacao/service/auth.service';
-import { JwtStrategy } from './aplicacao/service/jwt.strategy';
-import { JwtConfig } from './aplicacao/service/JwtConfig';
+import { JwtStrategy } from './infra/services/jwt.strategy';
+import { JwtConfig } from './infra/services/JwtConfig';
 
 @Module({
   imports: [

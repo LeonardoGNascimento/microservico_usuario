@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { stringify } from 'querystring';
-import { UsuarioService } from 'src/Usuario/aplicacao/services/usuario.service';
-import { Usuario } from 'src/Usuario/dominio/models/usuario.model';
+import { Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { UsuarioService } from "src/Usuario/aplicacao/services/usuario.service";
+import { Usuario } from "src/Usuario/dominio/models/usuario.model";
 
 
 @Injectable()
