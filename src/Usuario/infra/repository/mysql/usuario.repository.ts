@@ -1,11 +1,7 @@
-/*
-https://docs.nestjs.com/providers#services
-*/
-
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm/repository/Repository';
-import { Usuario } from '../models/usuario.model';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Usuario } from "src/Usuario/dominio/models/usuario.model";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class UsuarioRepository {

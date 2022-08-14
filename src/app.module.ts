@@ -4,7 +4,7 @@ import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { HttpExceptionFilter } from './common/core/filter/HttpException.filter';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Usuario } from './Usuario/models/usuario.model';
+import { Usuario } from './Usuario/dominio/models/usuario.model';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({

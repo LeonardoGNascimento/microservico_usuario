@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
-import { JwtGuard } from 'src/Auth/aplicacao/service/jwt.guard';
-import { Usuario } from '../models/usuario.model';
-import { UsuarioService } from '../services/usuario.service';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards } from "@nestjs/common";
+import { JwtGuard } from "src/Auth/aplicacao/service/jwt.guard";
+import { Usuario } from "src/Usuario/dominio/models/usuario.model";
+import { UsuarioService } from "../services/usuario.service";
+
 
 @Controller('usuarios')
 export class UsuarioController {

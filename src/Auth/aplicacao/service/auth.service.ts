@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { stringify } from 'querystring';
-import { Usuario } from 'src/Usuario/models/usuario.model';
-import { UsuarioService } from 'src/Usuario/services/usuario.service';
+import { UsuarioService } from 'src/Usuario/aplicacao/services/usuario.service';
+import { Usuario } from 'src/Usuario/dominio/models/usuario.model';
+
 
 @Injectable()
 export class AuthService {

@@ -1,8 +1,7 @@
-import { HttpException, HttpStatus, Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { AuthService } from 'src/Auth/aplicacao/service/auth.service';
-import { Usuario } from '../models/usuario.model';
-import { UsuarioRepository } from '../repository/usuario.repository';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
+import { Usuario } from "src/Usuario/dominio/models/usuario.model";
+import { UsuarioRepository } from "src/Usuario/infra/repository/mysql/usuario.repository";
+
 
 @Injectable()
 export class UsuarioService {
