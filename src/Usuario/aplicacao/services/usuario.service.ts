@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 import { Usuario } from "src/Usuario/dominio/models/usuario.model";
 import { UsuarioRepository } from "src/Usuario/infra/repository/mysql/usuario.repository";
+import * as crypto from 'crypto';
 
 
 @Injectable()
@@ -12,7 +13,7 @@ export class UsuarioService {
   public async login(usuario: Usuario) {
     const resultado = await this.usuarioRepository.login(usuario);
 
-    if(!resultado) {
+    if (!resultado) {
       throw new NotFoundException('Usuario não encontrado');
     }
 
@@ -26,6 +27,8 @@ export class UsuarioService {
     if (verificarEmail) {
       throw new HttpException('Email já cadastrado', HttpStatus.BAD_REQUEST);
     }
+
+    usuarioRequest.senha = crypto.createHash('md5').update(usuarioRequest.senha).digest("hex");
 
     const usuario = await this.usuarioRepository.cadastrar(usuarioRequest);
 
