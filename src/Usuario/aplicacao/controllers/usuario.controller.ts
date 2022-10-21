@@ -1,72 +1,39 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards } from "@nestjs/common";
-import { JwtGuard } from "src/Auth/infra/services/jwt.guard";
-import { Usuario } from "src/Usuario/dominio/models/usuario.model";
-import { UsuarioService } from "../services/usuario.service";
-
+import { Controller } from '@nestjs/common';
+import { Usuario } from '../../dominio/models/usuario.model';
+import { UsuarioService } from '../services/usuario.service';
+import { EventPattern, Payload, MessagePattern } from '@nestjs/microservices';
 
 @Controller('usuarios')
 export class UsuarioController {
+  constructor(private usuarioService: UsuarioService) {}
 
-  constructor(
-    private usuarioService: UsuarioService
-  ) { }
-
-  @Post()
-  @UseGuards(JwtGuard)
-  @HttpCode(HttpStatus.CREATED)
-  public async cria(
-    @Body() usuario: Usuario
-  ): Promise<Usuario> {
-    const usuarioCriado = await this.usuarioService.cria(usuario);
-
-    return usuarioCriado;
+  @EventPattern('criar-usuario')
+  async cria(@Payload() usuario: Usuario): Promise<Usuario> {
+    return await this.usuarioService.cria(usuario);
   }
 
-  @Get()
-  @UseGuards(JwtGuard)
-  @HttpCode(HttpStatus.OK)
-  public async listar(): Promise<Usuario[]> {
-    const usuarios = await this.usuarioService.listar();
-
-    return usuarios;
+  @MessagePattern('listar-usuarios')
+  async listar(): Promise<Usuario[]> {
+    return await this.usuarioService.listar();
   }
 
-  @Patch(':id')
-  @UseGuards(JwtGuard)
-  @HttpCode(HttpStatus.OK)
-  public async atualizar(
-    @Param('id') id: number,
-    @Body() body
-  ): Promise<Usuario> {
-    const usuario = new Usuario();
-    usuario.id = id
-    usuario.nome = body.nome;
-    usuario.email = body.email;
-
-    const resultado = await this.usuarioService.atualizar(usuario);
-
-    return resultado
+  @MessagePattern('atualizar-usuario')
+  async atualizar(@Payload() usuario: Usuario): Promise<Usuario> {
+    return await this.usuarioService.atualizar(usuario);
   }
 
-  @Get(':id')
-  @UseGuards(JwtGuard)
-  @HttpCode(HttpStatus.OK)
-  public async buscar(
-    @Param('id') id: number
-  ): Promise<Usuario> {
-    const usuario = await this.usuarioService.buscar(id);
-
-    return usuario;
+  @MessagePattern('buscar-usuario')
+  async buscar(@Payload() id: number): Promise<Usuario> {
+    return await this.usuarioService.buscar(id);
   }
 
-  @Delete(':id')
-  @UseGuards(JwtGuard)
-  @HttpCode(HttpStatus.NO_CONTENT)
-  public async excluir(
-    @Param('id') id: number
-  ): Promise<void> {
-    const resultado = await this.usuarioService.excluir(id);
+  @MessagePattern('buscar-email')
+  async buscarUsuarioEmail(@Payload() email: string): Promise<Usuario> {
+    return await this.usuarioService.buscarUsuarioEmail(email);
+  }
 
-    return resultado;
+  @EventPattern('excluir-usuario')
+  async excluir(@Payload() id: number): Promise<void> {
+    this.usuarioService.excluir(id);
   }
 }

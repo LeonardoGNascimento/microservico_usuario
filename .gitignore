@@ -1,7 +1,8 @@
 # compiled output
 /dist
 /node_modules
-.env
+/Mysql_data
+/dados
 
 # Logs
 logs
