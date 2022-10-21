@@ -3,6 +3,7 @@
 /node_modules
 /Mysql_data
 /dados
+/.env
 
 # Logs
 logs
