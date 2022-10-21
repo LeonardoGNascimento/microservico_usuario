@@ -4,6 +4,7 @@
 /Mysql_data
 /dados
 /.env
+.env
 
 # Logs
 logs
